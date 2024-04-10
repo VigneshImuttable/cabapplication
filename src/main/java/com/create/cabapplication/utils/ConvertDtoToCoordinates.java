@@ -1,9 +1,9 @@
-package utils;
+package com.create.cabapplication.utils;
 
+import com.create.cabapplication.dtos.DriverSignUpDto;
+import com.create.cabapplication.dtos.FindRideDto;
+import com.create.cabapplication.models.LocationCoordinates;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dtos.DriverSignUpDto;
-import dtos.FindRideDto;
-import models.LocationCoordinates;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package dtos;
+package com.create.cabapplication.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

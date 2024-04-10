@@ -1,15 +1,13 @@
-package controllers;
+package com.create.cabapplication.controllers;
 
-import dtos.DriverSignUpDto;
-import models.DriverPartner;
-import models.LocationCoordinates;
-import models.Rider;
+import com.create.cabapplication.dtos.DriverSignUpDto;
+import com.create.cabapplication.models.LocationCoordinates;
+import com.create.cabapplication.models.DriverPartner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import repositories.DriverRepository;
-import repositories.RiderRepository;
-import services.DriverServices;
-import utils.ConvertDtoToCoordinates;
+import com.create.cabapplication.repositories.DriverRepository;
+import com.create.cabapplication.services.DriverServices;
+import com.create.cabapplication.utils.ConvertDtoToCoordinates;
 
 @RestController
 @RequestMapping("/driver")
@@ -21,7 +19,7 @@ public class DriverController {
     public DriverController(DriverServices driverServices){
         this.driverServices = driverServices;
     }
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public DriverPartner addDriver(@RequestBody DriverSignUpDto driverSignUpDto){
         String name = driverSignUpDto.getName();
         Integer age = driverSignUpDto.getAge();

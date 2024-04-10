@@ -1,4 +1,4 @@
-package models;
+package com.create.cabapplication.models;
 
 import lombok.Getter;
 import lombok.Setter;

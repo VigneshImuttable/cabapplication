@@ -1,8 +1,8 @@
-package dtos;
+package com.create.cabapplication.dtos;
 
+import com.create.cabapplication.models.LocationCoordinates;
 import lombok.Getter;
 import lombok.Setter;
-import models.LocationCoordinates;
 
 @Getter
 @Setter

@@ -1,16 +1,16 @@
-package services;
+package com.create.cabapplication.services;
 
-import dtos.DriverResponseDto;
-import dtos.FindRideResponseDto;
-import dtos.TripConfirmationDto;
-import models.DriverPartner;
-import models.LocationCoordinates;
-import models.Trip;
+import com.create.cabapplication.models.LocationCoordinates;
+import com.create.cabapplication.repositories.DriverRepository;
+import com.create.cabapplication.dtos.DriverResponseDto;
+import com.create.cabapplication.dtos.FindRideResponseDto;
+import com.create.cabapplication.dtos.TripConfirmationDto;
+import com.create.cabapplication.models.DriverPartner;
+import com.create.cabapplication.models.Trip;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import repositories.DriverRepository;
-import repositories.TripRepository;
+import com.create.cabapplication.repositories.TripRepository;
 
 import java.util.ArrayList;
 import java.util.List;

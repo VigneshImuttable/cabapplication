@@ -1,9 +1,8 @@
-package repositories;
+package com.create.cabapplication.repositories;
 
-import models.DriverPartner;
+import com.create.cabapplication.models.DriverPartner;
 import org.springframework.stereotype.Component;
 
-import java.sql.Driver;
 import java.util.HashMap;
 import java.util.Map;
 

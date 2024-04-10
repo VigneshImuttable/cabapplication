@@ -1,10 +1,9 @@
-package services;
+package com.create.cabapplication.services;
 
-import models.DriverPartner;
-import models.LocationCoordinates;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.create.cabapplication.models.LocationCoordinates;
+import com.create.cabapplication.repositories.DriverRepository;
+import com.create.cabapplication.models.DriverPartner;
 import org.springframework.stereotype.Service;
-import repositories.DriverRepository;
 
 import java.util.Optional;
 

@@ -1,15 +1,19 @@
-package controllers;
+package com.create.cabapplication.controllers;
 
-import dtos.*;
-import models.LocationCoordinates;
+import com.create.cabapplication.dtos.ConfirmTripDto;
+import com.create.cabapplication.dtos.FindRideDto;
+import com.create.cabapplication.dtos.FindRideResponseDto;
+import com.create.cabapplication.dtos.TripConfirmationDto;
+import com.create.cabapplication.models.LocationCoordinates;
+import com.create.cabapplication.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import services.TripServices;
-import utils.ConvertDtoToCoordinates;
+import com.create.cabapplication.services.TripServices;
+import com.create.cabapplication.utils.ConvertDtoToCoordinates;
 
 import java.util.Map;
 
@@ -25,7 +29,7 @@ public class TripController {
     }
     @PostMapping("/findDrivers")
     public ResponseEntity<FindRideResponseDto> findRide(@RequestBody FindRideDto findRideDto){
-        Map<String,LocationCoordinates> coordinates = ConvertDtoToCoordinates.convertDtoToCoordinates(findRideDto);
+        Map<String, LocationCoordinates> coordinates = ConvertDtoToCoordinates.convertDtoToCoordinates(findRideDto);
         LocationCoordinates source = coordinates.get("source");
         LocationCoordinates destination = coordinates.get("destination");
         Long riderId = findRideDto.getRiderId();
@@ -42,5 +46,7 @@ public class TripController {
 
         return tripServices.confirmRide(driverId,tripId);
     }
+
+
 
 }

@@ -1,7 +1,6 @@
-package repositories;
+package com.create.cabapplication.repositories;
 
-import models.Rider;
-import models.Trip;
+import com.create.cabapplication.models.Trip;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

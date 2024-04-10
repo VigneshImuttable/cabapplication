@@ -1,11 +1,11 @@
-package controllers;
+package com.create.cabapplication.controllers;
 
-import dtos.RiderSignUpDto;
-import models.Rider;
+import com.create.cabapplication.dtos.RiderSignUpDto;
+import com.create.cabapplication.models.Rider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import repositories.RiderRepository;
-import services.RiderServices;
+import com.create.cabapplication.repositories.RiderRepository;
+import com.create.cabapplication.services.RiderServices;
 
 @RestController
 @RequestMapping("/rider")

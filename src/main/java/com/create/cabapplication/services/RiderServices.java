@@ -1,10 +1,8 @@
-package services;
+package com.create.cabapplication.services;
 
-import models.Rider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import com.create.cabapplication.models.Rider;
 import org.springframework.stereotype.Service;
-import repositories.RiderRepository;
+import com.create.cabapplication.repositories.RiderRepository;
 
 @Service
 public class RiderServices {
