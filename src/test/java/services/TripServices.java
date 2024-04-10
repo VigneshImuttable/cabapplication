@@ -1,12 +1,16 @@
 package services;
 
 import dtos.DriverResponseDto;
+import dtos.FindRideResponseDto;
 import dtos.TripConfirmationDto;
-import lombok.Setter;
 import models.DriverPartner;
 import models.LocationCoordinates;
+import models.Trip;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import repositories.DriverRepository;
+import repositories.TripRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +21,9 @@ public class TripServices {
 
     private static final int EARTH_RADIUS_KM = 6371;
     private static final int Near_By_Distance_KM= 10;
-    public List<DriverResponseDto> findRideAvailable(LocationCoordinates source, LocationCoordinates destination, Long riderId){
+
+
+    public ResponseEntity<FindRideResponseDto> findRideAvailable(LocationCoordinates source, LocationCoordinates destination, Long riderId){
 
         List<DriverResponseDto> availableDriverPartner = new ArrayList<>();
 
@@ -31,13 +37,65 @@ public class TripServices {
                 driverResponseDto.setCurrentLocationDriver(curr.getCurrentLocation());
                 availableDriverPartner.add(driverResponseDto);
             }
-           return availableDriverPartner;
         }
-        return null;
+
+        FindRideResponseDto responseDto;
+        if(!availableDriverPartner.isEmpty()){
+            Trip trip = createTrip(source,destination,riderId);
+            String message = "Here are available drivers for you";
+            responseDto = new FindRideResponseDto(availableDriverPartner, trip.getTripId(), message);
+            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        }
+
+        else{
+            String message="There are No available drivers currently , Please retry";
+            responseDto = new FindRideResponseDto();
+            responseDto.setMessage(message);
+            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        }
     }
 
-    public TripConfirmationDto confirmRide(Long driverId, Long riderId){
-        return null;
+    public ResponseEntity<TripConfirmationDto> confirmRide(Long driverId, Long tripId) {
+        // Check if the driver exists
+        DriverPartner driverPartner = DriverRepository.findById(driverId);
+        if (driverPartner == null) {
+            throw new RuntimeException("No such driver found");
+        }
+
+        // Check if the driver is available and not engaged
+        if (!driverPartner.getActive() || driverPartner.getEngaged()) {
+            throw new RuntimeException("The driver is not available");
+        }
+
+        // Check if the trip exists
+        Trip trip = TripRepository.findById(tripId);
+        if (trip == null) {
+            throw new RuntimeException("No such trip found");
+        }
+
+        // Update trip details and mark the driver as engaged
+        trip.setDriverId(driverId);
+        trip.setPrice(0.0);
+        driverPartner.setEngaged(true);
+
+        //Synchronised block to perform the DB operations
+        synchronized (this) {
+            TripRepository.save(trip);
+            DriverRepository.save(driverPartner);
+        }
+
+        TripConfirmationDto tripConfirmationDto = new TripConfirmationDto(driverId, driverPartner.getName(),
+                trip.getPrice(), "You have started your Trip");
+
+        return ResponseEntity.status(HttpStatus.OK).body(tripConfirmationDto);
+    }
+
+    public static Trip createTrip(LocationCoordinates source, LocationCoordinates destination, Long riderId){
+        Trip trip = new Trip();
+        trip.setRiderId(riderId);
+        trip.setSource(source);
+        trip.setDestination(destination);
+      return  TripRepository.save(trip);
     }
 
     public static double calculateDistance(LocationCoordinates source, LocationCoordinates destination) {
@@ -56,11 +114,6 @@ public class TripServices {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return EARTH_RADIUS_KM * c; // Distance in kilometers
     }
-
-
-
-
-
 
 
 }

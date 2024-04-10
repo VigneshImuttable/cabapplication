@@ -7,7 +7,7 @@ import models.LocationCoordinates;
 @Getter
 @Setter
 public class DriverResponseDto {
-    private long id;
+    private Long id;
     private String name;
     private LocationCoordinates currentLocationDriver;
 }

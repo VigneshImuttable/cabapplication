@@ -3,10 +3,8 @@ package controllers;
 import dtos.RiderSignUpDto;
 import models.Rider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import repositories.RiderRepository;
 import services.RiderServices;
 
 @RestController
@@ -30,5 +28,8 @@ public class RiderController {
         return riderServices.addRider(name,age,sex);
     }
 
-
+    @GetMapping("/{id}")
+    public Rider getRider(@PathVariable("id") Long riderId) {
+        return RiderRepository.findById(riderId);
+    }
 }

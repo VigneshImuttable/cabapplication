@@ -3,10 +3,11 @@ package controllers;
 import dtos.DriverSignUpDto;
 import models.DriverPartner;
 import models.LocationCoordinates;
+import models.Rider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import repositories.DriverRepository;
+import repositories.RiderRepository;
 import services.DriverServices;
 import utils.ConvertDtoToCoordinates;
 
@@ -31,7 +32,10 @@ public class DriverController {
         LocationCoordinates currentLocation = ConvertDtoToCoordinates.convertDtoToCoordinate(driverSignUpDto);
         return driverServices.addDriver(name, age, sex, vehicleNumber, active, engaged, currentLocation);
     }
-
+    @GetMapping("/{id}")
+    public DriverPartner getDriver(@PathVariable("id") Long driverId) {
+        return DriverRepository.findById(driverId);
+    }
 
 
 
