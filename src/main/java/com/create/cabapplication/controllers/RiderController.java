@@ -30,6 +30,10 @@ public class RiderController {
 
     @GetMapping("/{id}")
     public Rider getRider(@PathVariable("id") Long riderId) {
-        return RiderRepository.findById(riderId);
+        return riderServices.findRider(riderId);
     }
+
+
+
+
 }

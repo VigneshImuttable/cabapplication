@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TripConfirmationDto {
+public class TripConfirmationResponseDto {
 
     private Long driverId;
     private String driverName;

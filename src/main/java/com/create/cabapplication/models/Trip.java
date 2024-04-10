@@ -1,5 +1,6 @@
 package com.create.cabapplication.models;
 
+import com.create.cabapplication.enums.TripStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,11 +8,11 @@ import lombok.Setter;
 @Setter
 public class Trip {
 
-    Long driverId;
-    Long riderId;
-    LocationCoordinates source;
-    LocationCoordinates destination;
-    Double price;
-    Long tripId;
-
+   private Long driverId;
+   private Long riderId;
+   private LocationCoordinates source;
+   private LocationCoordinates destination;
+   private Double price;
+   private  Long tripId;
+   private TripStatus status;
 }

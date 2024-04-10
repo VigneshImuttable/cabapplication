@@ -3,7 +3,7 @@ package com.create.cabapplication.controllers;
 import com.create.cabapplication.dtos.ConfirmTripDto;
 import com.create.cabapplication.dtos.FindRideDto;
 import com.create.cabapplication.dtos.FindRideResponseDto;
-import com.create.cabapplication.dtos.TripConfirmationDto;
+import com.create.cabapplication.dtos.TripConfirmationResponseDto;
 import com.create.cabapplication.models.LocationCoordinates;
 import com.create.cabapplication.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +39,17 @@ public class TripController {
     }
 
     @PostMapping("/chooseRide")
-    public ResponseEntity<TripConfirmationDto> confirmRide(@RequestBody ConfirmTripDto confirmTripDto){
+    public ResponseEntity<TripConfirmationResponseDto> confirmRide(@RequestBody ConfirmTripDto confirmTripDto){
 
         Long driverId = confirmTripDto.getDriverId();
         Long tripId = confirmTripDto.getTripId();
 
         return tripServices.confirmRide(driverId,tripId);
+    }
+
+    @PostMapping
+    public FinishRideResponseDto finishRide(@RequestBody FinishRideDto finishRideDto){
+        return tripServices.finishRide(finishRideDto.getRideId());
     }
 
 

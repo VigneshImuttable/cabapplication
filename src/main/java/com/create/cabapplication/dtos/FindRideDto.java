@@ -1,5 +1,6 @@
 package com.create.cabapplication.dtos;
 
+import com.create.cabapplication.enums.TripStatus;
 import com.create.cabapplication.models.LocationCoordinates;
 import lombok.Getter;
 import lombok.Setter;

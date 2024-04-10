@@ -1,10 +1,12 @@
 package com.create.cabapplication.services;
 
+import com.create.cabapplication.dtos.FinishRideResponseDto;
+import com.create.cabapplication.enums.TripStatus;
 import com.create.cabapplication.models.LocationCoordinates;
 import com.create.cabapplication.repositories.DriverRepository;
 import com.create.cabapplication.dtos.DriverResponseDto;
 import com.create.cabapplication.dtos.FindRideResponseDto;
-import com.create.cabapplication.dtos.TripConfirmationDto;
+import com.create.cabapplication.dtos.TripConfirmationResponseDto;
 import com.create.cabapplication.models.DriverPartner;
 import com.create.cabapplication.models.Trip;
 import com.create.cabapplication.strategies.PayStrategy;
@@ -29,6 +31,8 @@ public class TripServices {
 
     @Autowired
     public TripServices(PayStrategy payStrategy){this.payStrategy=payStrategy;}
+
+
     public ResponseEntity<FindRideResponseDto> findRideAvailable(LocationCoordinates source, LocationCoordinates destination, Long riderId){
 
         List<DriverResponseDto> availableDriverPartner = new ArrayList<>();
@@ -49,7 +53,7 @@ public class TripServices {
         if(!availableDriverPartner.isEmpty()){
             Trip trip = createTrip(source,destination,riderId);
             String message = "Here are available drivers for you";
-            responseDto = new FindRideResponseDto(availableDriverPartner, trip.getTripId(), message);
+            responseDto = new FindRideResponseDto(availableDriverPartner, trip.getTripId(), message,TripStatus.REQUESTED);
             return ResponseEntity.status(HttpStatus.OK).body(responseDto);
         }
 
@@ -61,7 +65,7 @@ public class TripServices {
         }
     }
 
-    public ResponseEntity<TripConfirmationDto> confirmRide(Long driverId, Long tripId) {
+    public ResponseEntity<TripConfirmationResponseDto> confirmRide(Long driverId, Long tripId) {
         // Check if the driver exists
         DriverPartner driverPartner = DriverRepository.findById(driverId);
         if (driverPartner == null) {
@@ -82,6 +86,7 @@ public class TripServices {
         // Update trip details and mark the driver as engaged
         trip.setDriverId(driverId);
         trip.setPrice(payStrategy.calculateAmount(calculateDistance(trip.getSource(), trip.getDestination())));
+        trip.setStatus(trip.getStatus().tripStarted());
         driverPartner.setEngaged(true);
 
         //Synchronised block to perform the DB operations
@@ -90,10 +95,10 @@ public class TripServices {
             DriverRepository.save(driverPartner);
         }
 
-        TripConfirmationDto tripConfirmationDto = new TripConfirmationDto(driverId, driverPartner.getName(),
+        TripConfirmationResponseDto tripConfirmationResponseDto = new TripConfirmationResponseDto(driverId, driverPartner.getName(),
                 trip.getPrice(), "You have started your Trip");
 
-        return ResponseEntity.status(HttpStatus.OK).body(tripConfirmationDto);
+        return ResponseEntity.status(HttpStatus.OK).body(tripConfirmationResponseDto);
     }
 
     public static Trip createTrip(LocationCoordinates source, LocationCoordinates destination, Long riderId){
@@ -101,6 +106,7 @@ public class TripServices {
         trip.setRiderId(riderId);
         trip.setSource(source);
         trip.setDestination(destination);
+        trip.setStatus(TripStatus.REQUESTED);
       return  TripRepository.save(trip);
     }
 
@@ -122,4 +128,12 @@ public class TripServices {
     }
 
 
+    public FinishRideResponseDto finishRide(Long tripId) {
+        Trip trip = TripRepository.findById(tripId);
+        if (trip == null) {
+            throw new RuntimeException("No such trip found");
+        }
+        trip.setStatus(TripStatus.COMPLETED);
+      return new FinishRideResponseDto(tripId,trip.getPrice());
+    }
 }

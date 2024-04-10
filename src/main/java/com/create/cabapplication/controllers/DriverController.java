@@ -1,5 +1,6 @@
 package com.create.cabapplication.controllers;
 
+import com.create.cabapplication.dtos.DriverLogOffDto;
 import com.create.cabapplication.dtos.DriverSignUpDto;
 import com.create.cabapplication.models.LocationCoordinates;
 import com.create.cabapplication.models.DriverPartner;
@@ -33,6 +34,11 @@ public class DriverController {
     @GetMapping("/{id}")
     public DriverPartner getDriver(@PathVariable("id") Long driverId) {
         return DriverRepository.findById(driverId);
+    }
+
+    @PostMapping("/logoff")
+    public DriverPartner logOff(@RequestBody DriverLogOffDto logOffDto){
+        return driverServices.logoff(logOffDto.getDriverId());
     }
 
 

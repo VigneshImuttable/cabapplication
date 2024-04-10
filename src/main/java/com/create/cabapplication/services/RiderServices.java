@@ -22,4 +22,7 @@ public class RiderServices {
     }
 
 
+    public Rider findRider(Long riderId) {
+        return RiderRepository.findById(riderId);
+    }
 }

@@ -34,4 +34,14 @@ public class DriverServices {
         }
         return DriverRepository.save(driver);
     }
+
+    public DriverPartner logoff(Long driverId) {
+        Optional<DriverPartner> optional= Optional.ofNullable(DriverRepository.findById(driverId));
+        if(optional.isEmpty()) throw new IllegalArgumentException("The Driver does not exist");
+
+        DriverPartner driver = optional.get();
+        driver.setActive(false);
+        return DriverRepository.save(driver);
+
+    }
 }

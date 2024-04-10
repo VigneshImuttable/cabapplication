@@ -87,7 +87,7 @@ public class DriverClass {
         confirmTripDto1.setDriverName("John Doe");
         confirmTripDto1.setTripId(1L);
 
-        TripConfirmationDto tripConfirmationResponse = tripController.confirmRide(confirmTripDto1).getBody();
+        TripConfirmationResponseDto tripConfirmationResponse = tripController.confirmRide(confirmTripDto1).getBody();
 
         assert tripConfirmationResponse != null;
 
