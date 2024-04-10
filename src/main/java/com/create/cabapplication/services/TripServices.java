@@ -7,6 +7,8 @@ import com.create.cabapplication.dtos.FindRideResponseDto;
 import com.create.cabapplication.dtos.TripConfirmationDto;
 import com.create.cabapplication.models.DriverPartner;
 import com.create.cabapplication.models.Trip;
+import com.create.cabapplication.strategies.PayStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,11 @@ public class TripServices {
     private static final int EARTH_RADIUS_KM = 6371;
     private static final int Near_By_Distance_KM= 10;
 
+    @Autowired
+    private PayStrategy payStrategy;
 
+    @Autowired
+    public TripServices(PayStrategy payStrategy){this.payStrategy=payStrategy;}
     public ResponseEntity<FindRideResponseDto> findRideAvailable(LocationCoordinates source, LocationCoordinates destination, Long riderId){
 
         List<DriverResponseDto> availableDriverPartner = new ArrayList<>();
@@ -75,7 +81,7 @@ public class TripServices {
 
         // Update trip details and mark the driver as engaged
         trip.setDriverId(driverId);
-        trip.setPrice(0.0);
+        trip.setPrice(payStrategy.calculateAmount(calculateDistance(trip.getSource(), trip.getDestination())));
         driverPartner.setEngaged(true);
 
         //Synchronised block to perform the DB operations

@@ -8,6 +8,7 @@ import com.create.cabapplication.models.LocationCoordinates;
 import com.create.cabapplication.services.DriverServices;
 import com.create.cabapplication.services.RiderServices;
 import com.create.cabapplication.services.TripServices;
+import com.create.cabapplication.strategies.DynamicPayStrategy;
 
 public class DriverClass {
 
@@ -16,7 +17,7 @@ public class DriverClass {
 
         DriverController driverController = new DriverController(new DriverServices());
         RiderController riderController = new RiderController(new RiderServices());
-        TripController tripController = new TripController(new TripServices());
+        TripController tripController = new TripController(new TripServices(new DynamicPayStrategy()));
 
         DriverSignUpDto driver1 = new DriverSignUpDto();
         driver1.setName("John Doe");
